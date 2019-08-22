@@ -11,6 +11,7 @@ from prices import Money, TaxedMoney
 from saleor.account.models import CustomerEvent
 from saleor.core.taxes import zero_taxed_money
 from saleor.graphql.core.enums import ReportingPeriod
+from saleor.graphql.core.utils.error_codes import CommonErrorCode
 from saleor.graphql.order.mutations.orders import (
     clean_order_cancel,
     clean_order_capture,
@@ -1426,6 +1427,7 @@ def test_paid_order_mark_as_paid(
                     errors {
                         field
                         message
+                        code
                     }
                     order {
                         isPaid
@@ -1443,6 +1445,7 @@ def test_paid_order_mark_as_paid(
     msg = "Orders with payments can not be manually marked as paid."
     assert errors[0]["message"] == msg
     assert errors[0]["field"] == "payment"
+    assert errors[0]["code"] == CommonErrorCode.PAYMENT_ERROR.name
 
 
 def test_order_mark_as_paid(
@@ -1488,6 +1491,7 @@ ORDER_VOID = """
             errors {
                 field
                 message
+                code
             }
         }
     }
@@ -1531,6 +1535,7 @@ def test_order_void_payment_error(
         errors = content["data"]["orderVoid"]["errors"]
         assert errors[0]["field"] == "payment"
         assert errors[0]["message"] == msg
+        assert errors[0]["code"] == CommonErrorCode.PAYMENT_ERROR.name
 
 
 def test_order_refund(staff_api_client, permission_manage_orders, payment_txn_captured):
