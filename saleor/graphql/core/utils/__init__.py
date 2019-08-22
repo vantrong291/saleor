@@ -2,6 +2,8 @@ import graphene
 import graphene_django_optimizer as gql_optimizer
 from django.core.exceptions import ValidationError
 
+from .error_codes import CommonErrorCode
+
 
 def clean_seo_fields(data):
     """Extract and assign seo fields to given dictionary."""
@@ -27,7 +29,13 @@ def str_to_enum(name):
 def validate_image_file(file, field_name):
     """Validate if the file is an image."""
     if not file.content_type.startswith("image/"):
-        raise ValidationError({field_name: "Invalid file type"})
+        raise ValidationError(
+            {
+                field_name: ValidationError(
+                    "Invalid file type", code=CommonErrorCode.INVALID_FILE_TYPE
+                )
+            }
+        )
 
 
 def from_global_id_strict_type(info, global_id, only_type, field="id"):
@@ -35,7 +43,14 @@ def from_global_id_strict_type(info, global_id, only_type, field="id"):
     _type, _id = graphene.Node.from_global_id(global_id)
     graphene_type = info.schema.get_type(_type).graphene_type
     if graphene_type != only_type:
-        raise ValidationError({field: "Couldn't resolve to a node: %s" % global_id})
+        raise ValidationError(
+            {
+                field: ValidationError(
+                    "Couldn't resolve to a node: %s" % global_id,
+                    code=CommonErrorCode.DOES_NOT_EXIST,
+                )
+            }
+        )
     return _id
 
 

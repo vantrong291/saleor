@@ -32,6 +32,7 @@ from ...core.utils import (
     from_global_id_strict_type,
     validate_image_file,
 )
+from ...core.utils.error_codes import CommonErrorCode, ProductErrorCode
 from ...core.utils.reordering import perform_reordering
 from ..types import (
     Attribute,
@@ -240,7 +241,12 @@ class CollectionReorderProducts(BaseMutation):
             ).get(pk=pk)
         except ObjectDoesNotExist:
             raise ValidationError(
-                {"collection_id": f"Couldn't resolve to a collection: {collection_id}"}
+                {
+                    "collection_id": ValidationError(
+                        f"Couldn't resolve to a collection: {collection_id}",
+                        code=CommonErrorCode.DOES_NOT_EXIST,
+                    )
+                }
             )
 
         m2m_related_field = collection.collectionproduct
@@ -257,7 +263,12 @@ class CollectionReorderProducts(BaseMutation):
                 m2m_info = m2m_related_field.get(product_id=int(product_pk))
             except ObjectDoesNotExist:
                 raise ValidationError(
-                    {"moves": f"Couldn't resolve to a product: {move_info.product_id}"}
+                    {
+                        "moves": ValidationError(
+                            f"Couldn't resolve to a product: {move_info.product_id}",
+                            code=CommonErrorCode.DOES_NOT_EXIST,
+                        )
+                    }
                 )
             operations[m2m_info.pk] = move_info.sort_order
 
@@ -504,7 +515,13 @@ class ProductCreate(ModelMutation):
             try:
                 attributes = attributes_to_json(attributes, qs)
             except ValueError as e:
-                raise ValidationError({"attributes": str(e)})
+                raise ValidationError(
+                    {
+                        "attributes": ValidationError(
+                            str(e), code=CommonErrorCode.VALUE_ERROR
+                        )
+                    }
+                )
             else:
                 cleaned_input["attributes"] = attributes
         clean_seo_fields(cleaned_input)
@@ -523,9 +540,23 @@ class ProductCreate(ModelMutation):
         if product_type and not product_type.has_variants:
             input_sku = cleaned_input.get("sku")
             if not input_sku:
-                raise ValidationError({"sku": "This field cannot be blank."})
+                raise ValidationError(
+                    {
+                        "sku": ValidationError(
+                            "This field cannot be blank.",
+                            code=CommonErrorCode.NON_BLANK_VALUE_REQUIRED,
+                        )
+                    }
+                )
             elif models.ProductVariant.objects.filter(sku=input_sku).exists():
-                raise ValidationError({"sku": "Product with this SKU already exists."})
+                raise ValidationError(
+                    {
+                        "sku": ValidationError(
+                            "Product with this SKU already exists.",
+                            code=ProductErrorCode.PRODUCT_ALREADY_EXISTS,
+                        )
+                    }
+                )
 
     @classmethod
     @transaction.atomic
@@ -572,7 +603,14 @@ class ProductUpdate(ProductCreate):
             and input_sku
             and models.ProductVariant.objects.filter(sku=input_sku).exists()
         ):
-            raise ValidationError({"sku": "Product with this SKU already exists."})
+            raise ValidationError(
+                {
+                    "sku": ValidationError(
+                        "Product with this SKU already exists.",
+                        code=ProductErrorCode.PRODUCT_ALREADY_EXISTS,
+                    )
+                }
+            )
 
     @classmethod
     @transaction.atomic
@@ -702,7 +740,12 @@ class ProductVariantCreate(ModelMutation):
                 input_slug_map[slug] = values
             else:
                 raise ValidationError(
-                    {"attributes": "Please provide a value's identifier."}
+                    {
+                        "attributes": ValidationError(
+                            "Please provide a value's identifier.",
+                            code=CommonErrorCode.MISSING_VALUE,
+                        )
+                    }
                 )
 
         for attr in attributes_qs:
@@ -711,7 +754,14 @@ class ProductVariantCreate(ModelMutation):
 
             if not values_by_id and not values_by_slug:
                 fieldname = "attributes:%s" % attr.slug
-                raise ValidationError({fieldname: "This field cannot be blank."})
+                raise ValidationError(
+                    {
+                        fieldname: ValidationError(
+                            "This field cannot be blank.",
+                            code=CommonErrorCode.NON_BLANK_VALUE_REQUIRED,
+                        )
+                    }
+                )
 
     @classmethod
     def clean_input(cls, info, instance, data):
@@ -739,7 +789,13 @@ class ProductVariantCreate(ModelMutation):
                 cls.clean_product_type_attributes(info, variant_attrs, attributes_input)
                 attributes = attributes_to_json(attributes_input, variant_attrs)
             except ValueError as e:
-                raise ValidationError({"attributes": str(e)})
+                raise ValidationError(
+                    {
+                        "attributes": ValidationError(
+                            str(e), code=CommonErrorCode.VALUE_ERROR
+                        )
+                    }
+                )
             else:
                 cleaned_input["attributes"] = attributes
 
@@ -1050,7 +1106,14 @@ class ProductImageReorder(BaseMutation):
             info, product_id, field="product_id", only_type=Product
         )
         if len(images_ids) != product.images.count():
-            raise ValidationError({"order": "Incorrect number of image IDs provided."})
+            raise ValidationError(
+                {
+                    "order": ValidationError(
+                        "Incorrect number of image IDs provided.",
+                        code=CommonErrorCode.INCORRECT_VALUE,
+                    )
+                }
+            )
 
         images = []
         for image_id in images_ids:
@@ -1059,8 +1122,13 @@ class ProductImageReorder(BaseMutation):
             )
             if image and image.product != product:
                 raise ValidationError(
-                    {"order": "Image %(image_id)s does not belong to this product."},
-                    params={"image_id": image_id},
+                    {
+                        "order": ValidationError(
+                            "Image %(image_id)s does not belong to this product.",
+                            code=ProductErrorCode.NOT_PRODUCTS_IMAGE,
+                            params={"image_id": image_id},
+                        )
+                    }
                 )
             images.append(image)
 
@@ -1122,7 +1190,12 @@ class VariantImageAssign(BaseMutation):
                 image.variant_images.create(variant=variant)
             else:
                 raise ValidationError(
-                    {"image_id": "This image doesn't belong to that product."}
+                    {
+                        "image_id": ValidationError(
+                            "This image doesn't belong to that product.",
+                            code=ProductErrorCode.NOT_PRODUCTS_IMAGE,
+                        )
+                    }
                 )
         return VariantImageAssign(product_variant=variant, image=image)
 
@@ -1157,7 +1230,12 @@ class VariantImageUnassign(BaseMutation):
             )
         except models.VariantImage.DoesNotExist:
             raise ValidationError(
-                {"image_id": "Image is not assigned to this variant."}
+                {
+                    "image_id": ValidationError(
+                        "Image is not assigned to this variant.",
+                        code=ProductErrorCode.NOT_PRODUCTS_IMAGE,
+                    )
+                }
             )
         else:
             variant_image.delete()
