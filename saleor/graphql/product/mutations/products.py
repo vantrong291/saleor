@@ -244,7 +244,7 @@ class CollectionReorderProducts(BaseMutation):
                 {
                     "collection_id": ValidationError(
                         f"Couldn't resolve to a collection: {collection_id}",
-                        code=CommonErrorCode.DOES_NOT_EXIST,
+                        code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                     )
                 }
             )
@@ -266,7 +266,7 @@ class CollectionReorderProducts(BaseMutation):
                     {
                         "moves": ValidationError(
                             f"Couldn't resolve to a product: {move_info.product_id}",
-                            code=CommonErrorCode.DOES_NOT_EXIST,
+                            code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                         )
                     }
                 )

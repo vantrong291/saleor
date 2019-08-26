@@ -450,7 +450,7 @@ class CheckoutShippingAddressUpdate(BaseMutation, I18nMixin):
                 {
                     "checkout_id": ValidationError(
                         f"Couldn't resolve to a node: {checkout_id}",
-                        code=CommonErrorCode.DOES_NOT_EXIST,
+                        code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                     )
                 }
             )
@@ -554,7 +554,7 @@ class CheckoutShippingMethodUpdate(BaseMutation):
                 {
                     "checkout_id": ValidationError(
                         f"Couldn't resolve to a node: {checkout_id}",
-                        code=CommonErrorCode.DOES_NOT_EXIST,
+                        code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                     )
                 }
             )
@@ -716,7 +716,7 @@ class CheckoutUpdateVoucher(BaseMutation):
                     {
                         "voucher_code": ValidationError(
                             "Voucher with given code does not exist.",
-                            code=CommonErrorCode.DOES_NOT_EXIST,
+                            code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                         )
                     }
                 )

@@ -47,7 +47,7 @@ def from_global_id_strict_type(info, global_id, only_type, field="id"):
             {
                 field: ValidationError(
                     "Couldn't resolve to a node: %s" % global_id,
-                    code=CommonErrorCode.DOES_NOT_EXIST,
+                    code=CommonErrorCode.OBJECT_DOES_NOT_EXIST,
                 )
             }
         )
