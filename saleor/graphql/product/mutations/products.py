@@ -517,7 +517,7 @@ class ProductCreate(ModelProductMutation):
                 raise ValidationError(
                     {
                         "attributes": ValidationError(
-                            str(e), code=ProductErrorCode.VALUE_ERROR
+                            str(e), code=ProductErrorCode.INVALID
                         )
                     }
                 )
@@ -742,7 +742,7 @@ class ProductVariantCreate(ModelProductMutation):
                     {
                         "attributes": ValidationError(
                             "Please provide a value's identifier.",
-                            code=ProductErrorCode.MISSING_VALUE,
+                            code=ProductErrorCode.REQUIRED,
                         )
                     }
                 )
@@ -791,7 +791,7 @@ class ProductVariantCreate(ModelProductMutation):
                 raise ValidationError(
                     {
                         "attributes": ValidationError(
-                            str(e), code=ProductErrorCode.VALUE_ERROR
+                            str(e), code=ProductErrorCode.INVALID
                         )
                     }
                 )
@@ -1109,7 +1109,7 @@ class ProductImageReorder(BaseProductMutation):
                 {
                     "order": ValidationError(
                         "Incorrect number of image IDs provided.",
-                        code=ProductErrorCode.INCORRECT_VALUE,
+                        code=ProductErrorCode.INVALID,
                     )
                 }
             )
