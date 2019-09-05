@@ -65,6 +65,7 @@ All notable, unreleased changes to this project will be documented in this file.
 - Distinguish OrderLine product name and variant name - #4702 by @fowczarek
 - Fix for Digital products - update order status after automatic fulfillment - #4709 by @korycins
 - Add redirectUrl to staff and user create mutations - #4717 by @fowczarek
+- Add error codes to mutations responses - #4676 by @Kwaidan00
 
 ## 2.8.0
 
