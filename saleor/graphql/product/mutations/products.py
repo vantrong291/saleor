@@ -243,7 +243,7 @@ class CollectionReorderProducts(BaseProductMutation):
                 {
                     "collection_id": ValidationError(
                         f"Couldn't resolve to a collection: {collection_id}",
-                        code=ProductErrorCode.OBJECT_DOES_NOT_EXIST,
+                        code=ProductErrorCode.NOT_FOUND,
                     )
                 }
             )
@@ -265,7 +265,7 @@ class CollectionReorderProducts(BaseProductMutation):
                     {
                         "moves": ValidationError(
                             f"Couldn't resolve to a product: {move_info.product_id}",
-                            code=ProductErrorCode.OBJECT_DOES_NOT_EXIST,
+                            code=ProductErrorCode.NOT_FOUND,
                         )
                     }
                 )
@@ -552,7 +552,7 @@ class ProductCreate(ModelProductMutation):
                     {
                         "sku": ValidationError(
                             "Product with this SKU already exists.",
-                            code=ProductErrorCode.SKU_ALREADY_EXISTS,
+                            code=ProductErrorCode.ALREADY_EXISTS,
                         )
                     }
                 )
@@ -606,7 +606,7 @@ class ProductUpdate(ProductCreate):
                 {
                     "sku": ValidationError(
                         "Product with this SKU already exists.",
-                        code=ProductErrorCode.SKU_ALREADY_EXISTS,
+                        code=ProductErrorCode.ALREADY_EXISTS,
                     )
                 }
             )
