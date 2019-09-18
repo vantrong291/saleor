@@ -59,7 +59,6 @@ DATABASES = {
     )
 }
 
-
 TIME_ZONE = "America/Chicago"
 LANGUAGE_CODE = "en"
 LANGUAGES = [
@@ -273,7 +272,6 @@ INSTALLED_APPS = [
     "captcha",
 ]
 
-
 ENABLE_DEBUG_TOOLBAR = get_bool_from_env("ENABLE_DEBUG_TOOLBAR", False)
 if ENABLE_DEBUG_TOOLBAR:
     # Ensure the debug toolbar is actually installed before adding it
@@ -308,7 +306,7 @@ if ENABLE_SILK:
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "INFO", "handlers": ["console"]},
+    "root": {"level": "INFO", "handlers": ["console", "file"]},
     "formatters": {
         "verbose": {
             "format": (
@@ -329,15 +327,21 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(PROJECT_ROOT, "saleor", "logs", "django.log"),
+            "formatter": "verbose",
+        }
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins"],
+            "handlers": ["console", "mail_admins", "file"],
             "level": "INFO",
             "propagate": True,
         },
-        "django.server": {"handlers": ["console"], "level": "INFO", "propagate": True},
-        "saleor": {"handlers": ["console"], "level": "DEBUG", "propagate": True},
+        "django.server": {"handlers": ["console", "file"], "level": "INFO", "propagate": True},
+        "saleor": {"handlers": ["console","file"], "level": "DEBUG", "propagate": True},
     },
 }
 
@@ -504,7 +508,6 @@ WEBPACK_LOADER = {
     }
 }
 
-
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 # SEARCH CONFIGURATION
@@ -512,9 +515,9 @@ DB_SEARCH_ENABLED = True
 
 # support deployment-dependant elastic environment variable
 ES_URL = (
-    os.environ.get("ELASTICSEARCH_URL")
-    or os.environ.get("SEARCHBOX_URL")
-    or os.environ.get("BONSAI_URL")
+        os.environ.get("ELASTICSEARCH_URL")
+        or os.environ.get("SEARCHBOX_URL")
+        or os.environ.get("BONSAI_URL")
 )
 
 ENABLE_SEARCH = bool(ES_URL) or DB_SEARCH_ENABLED  # global search disabling
@@ -554,7 +557,7 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = (
-    os.environ.get("CELERY_BROKER_URL", os.environ.get("CLOUDAMQP_URL")) or ""
+        os.environ.get("CELERY_BROKER_URL", os.environ.get("CLOUDAMQP_URL")) or ""
 )
 CELERY_TASK_ALWAYS_EAGER = not CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -569,7 +572,6 @@ IMPERSONATE = {
     "USE_HTTP_REFERER": True,
     "CUSTOM_ALLOW": "saleor.account.impersonate.can_impersonate",
 }
-
 
 # Rich-text editor
 ALLOWED_TAGS = [
@@ -591,7 +593,6 @@ ALLOWED_TAGS = [
 ALLOWED_ATTRIBUTES = {"*": ["align", "style"], "a": ["href", "title"], "img": ["src"]}
 ALLOWED_STYLES = ["text-align"]
 
-
 # Slugs for menus precreated in Django migrations
 DEFAULT_MENUS = {"top_menu_name": "navbar", "bottom_menu_name": "footer"}
 
@@ -603,7 +604,6 @@ NOCAPTCHA = True
 # Set Google's reCaptcha keys
 RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
-
 
 #  Sentry
 SENTRY_DSN = os.environ.get("SENTRY_DSN")

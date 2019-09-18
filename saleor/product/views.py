@@ -2,6 +2,7 @@ import datetime
 import json
 import mimetypes
 import os
+import logging
 from typing import Union
 
 from django.http import (
@@ -35,6 +36,8 @@ from .utils.digital_products import (
     increment_download_count,
 )
 from .utils.variants_picker import get_variant_picker_data
+
+logger = logging.getLogger(__name__)
 
 
 def product_details(request, slug, product_id, form=None):
@@ -151,6 +154,7 @@ def product_add_to_checkout(request, slug, product_id):
     if form.is_valid():
         form.save()
         if request.is_ajax():
+            logger.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2')
             response = JsonResponse({"next": reverse("checkout:index")}, status=200)
         else:
             response = redirect("checkout:index")
