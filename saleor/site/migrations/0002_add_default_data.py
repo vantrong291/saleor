@@ -14,7 +14,7 @@ def create_default_site(apps, schema_editor):
         defaults={
             "name": "Saleor e-commerce",
             "header_text": "Test Saleor - a sample shop!",
-            "domain": "localhost:8000",
+            "domain": "localhost:9090",
         },
     )
 

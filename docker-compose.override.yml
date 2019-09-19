@@ -3,8 +3,8 @@ version: '2'
 services:
   web:
     ports:
-      - 8000:8000
-    command: python manage.py runserver 0.0.0.0:8000
+      - 9090:9090
+    command: python manage.py runserver 0.0.0.0:9090
     volumes:
       - ./saleor/:/app/saleor:Z
       - ./templates/:/app/templates:Z
