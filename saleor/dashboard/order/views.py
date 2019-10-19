@@ -25,6 +25,7 @@ from ...order.utils import update_order_prices, update_order_status
 from ...shipping.models import ShippingMethod
 from ..views import staff_member_required
 from .filters import OrderFilter
+import logging
 from .forms import (
     AddressForm,
     AddVariantToOrderForm,
@@ -655,6 +656,10 @@ def fulfill_order_lines(request, order_pk):
                 "Dashboard message related to an order", "No items fulfilled"
             )
         messages.success(request, msg)
+        logger = logging.getLogger(__name__)
+        # mioitlog
+        logger.info("Fulfill item for order %s",order_pk)
+    
         return redirect("dashboard:order-details", order_pk=order.pk)
     elif form.errors:
         status = 400
