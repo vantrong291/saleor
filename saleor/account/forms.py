@@ -10,6 +10,10 @@ from ..account.models import User
 from . import emails
 from .i18n import AddressMetaForm, get_address_form_class
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class FormWithReCaptcha(forms.BaseForm):
     def __new__(cls, *args, **kwargs):
