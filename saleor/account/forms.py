@@ -12,7 +12,7 @@ from .i18n import AddressMetaForm, get_address_form_class
 
 import logging
 
-logger = logging.getLogger(__name__)
+
 
 
 class FormWithReCaptcha(forms.BaseForm):
