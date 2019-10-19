@@ -104,8 +104,8 @@ def product_details(request, slug, product_id, form=None):
         "event": "PRODUCT DETAILS",
         "product_id": product_id,
         "product": product.name,
-        "product_type": product.product_type,
-        "category": product.category
+        "product_type": product.product_type.name,
+        "category": product.category.name
     }
     logger.info(json.dumps(log_dict))
     ctx = {
