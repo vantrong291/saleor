@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.contrib import auth, messages
@@ -188,6 +189,17 @@ def checkout_success(request, token):
     user_exists = User.objects.filter(email=email).exists()
     login_form = LoginForm(initial={"username": email}) if user_exists else None
     ctx.update({"form": register_form, "login_form": login_form})
+
+    # //vantrong291 log
+    # mioitlog
+    logger.info('CHECKOUT ORDER SUCCESSFULLY | PRODUCT | {} | USER | {}'.format(order.product_to_string(), str(order.user.first_name) + " " + str(order.user.last_name)))
+    log_dict = {
+        "event": "CHECKOUT ORDER SUCCESSFULLY",
+        "product": order.product_to_string(),
+        "user": str(order.user.first_name) + " " + str(order.user.last_name)
+    }
+    logger.info(json.dumps(log_dict))
+
     return TemplateResponse(request, "order/checkout_success_anonymous.html", ctx)
 
 

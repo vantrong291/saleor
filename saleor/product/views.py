@@ -96,6 +96,18 @@ def product_details(request, slug, product_id, form=None):
     # show_variant_picker determines if variant picker is used or select input
     show_variant_picker = all([v.attributes for v in product.variants.all()])
     json_ld_data = product_json_ld(product)
+
+    # //vantrong291 log
+    # mioitlog
+    logger.info('PRODUCT DETAILS | ID | {} | PRODUCT | {} | TYPE | {} | CATEGORY | {}'.format(product_id, product.name, product.product_type, product.category))
+    log_dict = {
+        "event": "PRODUCT DETAILS",
+        "product_id": product_id,
+        "product": product.name,
+        "product_type": product.product_type,
+        "category": product.category
+    }
+    logger.info(json.dumps(log_dict))
     ctx = {
         "description_json": product.translated.description_json,
         "description_html": product.translated.description,
