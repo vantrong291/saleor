@@ -98,6 +98,7 @@ def product_details(request, slug, product_id, form=None):
     json_ld_data = product_json_ld(product)
 
     # //vantrong291 log
+    # mioitlog
     logger.info('PRODUCT DETAILS | ID | {} | PRODUCT | {} | TYPE | {} | CATEGORY | {}'.format(product_id, product.name, product.product_type, product.category))
     log_dict = {
         "event": "PRODUCT DETAILS",

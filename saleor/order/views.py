@@ -191,6 +191,7 @@ def checkout_success(request, token):
     ctx.update({"form": register_form, "login_form": login_form})
 
     # //vantrong291 log
+    # mioitlog
     logger.info('CHECKOUT ORDER SUCCESSFULLY | PRODUCT | {} | USER | {}'.format(order.product_to_string(), str(order.user.first_name) + " " + str(order.user.last_name)))
     log_dict = {
         "event": "CHECKOUT ORDER SUCCESSFULLY",
