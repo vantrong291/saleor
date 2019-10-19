@@ -318,7 +318,7 @@ if ENABLE_SILK:
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "INFO", "handlers": ["console", "file"]},
+    "root": {"level": "INFO", "handlers": ["console"]},
     "formatters": {
         "verbose": {
             "format": (
