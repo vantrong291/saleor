@@ -1,7 +1,7 @@
 import ast
 import os.path
 import warnings
-
+import os
 import dj_database_url
 import dj_email_url
 import django_cache_url
@@ -10,6 +10,8 @@ from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from django_prices.utils.formatting import get_currency_fraction
 from sentry_sdk.integrations.django import DjangoIntegration
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_list(text):
