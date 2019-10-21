@@ -213,6 +213,7 @@ TEMPLATES = [
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 MIDDLEWARE = [
+    'django_logging.middleware.DjangoLoggingMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -282,6 +283,7 @@ INSTALLED_APPS = [
     "impersonate",
     "phonenumber_field",
     "captcha",
+    "django_logging"
 ]
 
 ENABLE_DEBUG_TOOLBAR = get_bool_from_env("ENABLE_DEBUG_TOOLBAR", False)
@@ -323,6 +325,7 @@ LOGGING = {
         "verbose": {
             "format": (
                 "%(levelname)s %(name)s %(message)s [PID:%(process)d:%(threadName)s]"
+                # "%(levelname)s %(name)s %(message)s [PID:%(process)d:%(threadName)s]"
             )
         },
         "simple": {"format": "%(levelname)s %(message)s"},
@@ -353,7 +356,7 @@ LOGGING = {
             "propagate": True,
         },
         "django.server": {"handlers": ["console"], "level": "INFO", "propagate": True},
-        "saleor": {"handlers": ["console","file"], "level": "DEBUG", "propagate": True},
+        "saleor": {"handlers": ["console", "file"], "level": "DEBUG", "propagate": True},
     },
 }
 
@@ -700,3 +703,7 @@ PLUGINS = [
 # True to use DraftJS (JSON based), for the 2.0 dashboard
 # False to use the old editor from dashboard 1.0
 USE_JSON_CONTENT = get_bool_from_env("USE_JSON_CONTENT", False)
+
+ELASTICSEARCH_ENABLED = True
+ELASTICSEARCH_HOSTS = ["http://35.232.197.57:9200"]
+ELASTICSEARCH_INDEX = "django-logging-json"
