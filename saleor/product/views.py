@@ -107,7 +107,8 @@ def product_details(request, slug, product_id, form=None):
         "product_type": product.product_type.name,
         "category": product.category.name
     }
-    logger.info(json.dumps(log_dict))
+    # logger.info(json.dumps(log_dict))
+    logger.info(log_dict)
     ctx = {
         "description_json": product.translated.description_json,
         "description_html": product.translated.description,
