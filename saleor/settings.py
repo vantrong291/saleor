@@ -1,6 +1,7 @@
 import ast
 import os.path
 import warnings
+import json_log_formatter
 
 import dj_database_url
 import dj_email_url
@@ -311,7 +312,11 @@ LOGGING = {
         "verbose": {
             "format": (
                 "%(levelname)s %(name)s %(message)s [PID:%(process)d:%(threadName)s]"
+                # "%(levelname)s %(name)s %(message)s [PID:%(process)d:%(threadName)s]"
             )
+        },
+        "json": {
+            '()': 'json_log_formatter.JSONFormatter',
         },
         "simple": {"format": "%(levelname)s %(message)s"},
     },
@@ -331,7 +336,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(PROJECT_ROOT, "saleor", "logs", "django.log"),
-            "formatter": "verbose",
+            "formatter": "json",
         }
     },
     "loggers": {
@@ -341,7 +346,7 @@ LOGGING = {
             "propagate": True,
         },
         "django.server": {"handlers": ["console", "file"], "level": "INFO", "propagate": True},
-        "saleor": {"handlers": ["console","file"], "level": "DEBUG", "propagate": True},
+        "saleor": {"handlers": ["console", "file"], "level": "DEBUG", "propagate": True},
     },
 }
 

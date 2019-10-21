@@ -9,6 +9,7 @@ RUN apt-get -y update \
 
 # Install Python dependencies
 RUN pip install pipenv
+RUN pip install django-log-formatter-json
 COPY Pipfile Pipfile.lock /app/
 WORKDIR /app
 RUN pipenv install --system --deploy --dev
