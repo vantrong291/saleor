@@ -332,6 +332,17 @@ class Order(models.Model):
     def get_total_weight(self):
         return self.weight
 
+    def product_to_string(self):
+        str_product_result = ""
+        for line in self.lines.all():
+            str_product_result = str_product_result + " " + str(line.product_name) + " " + str(line.variant_name) + ", "
+        return  str_product_result
+
+    def variant_to_string(self):
+        str_variant_result = ""
+        for line in self.lines.all():
+            str_variant_result = str_variant_result + " " + str(line.variant_name)
+        return  str_variant_result
 
 class OrderLineQueryset(models.QuerySet):
     def digital(self):
@@ -345,7 +356,6 @@ class OrderLineQueryset(models.QuerySet):
         for line in self.all():
             if not line.is_digital:
                 yield line
-
 
 class OrderLine(models.Model):
     order = models.ForeignKey(

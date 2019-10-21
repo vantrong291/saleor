@@ -3,6 +3,7 @@ import os.path
 import warnings
 import json_log_formatter
 
+import os
 import dj_database_url
 import dj_email_url
 import django_cache_url
@@ -11,6 +12,8 @@ from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from django_prices.utils.formatting import get_currency_fraction
 from sentry_sdk.integrations.django import DjangoIntegration
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_list(text):
@@ -54,10 +57,22 @@ if REDIS_URL:
     CACHE_URL = os.environ.setdefault("CACHE_URL", REDIS_URL)
 CACHES = {"default": django_cache_url.config()}
 
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default="postgres://saleor:saleor@112.137.131.12:5432/saleor", conn_max_age=600
+#         # default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600
+#     )
+# }
+
 DATABASES = {
-    "default": dj_database_url.config(
-        default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'saleor',
+        'USER': "saleor",
+        'PASSWORD': "saleor",
+        'HOST': "112.137.131.12",
+        'PORT': "5432",
+    }
 }
 
 TIME_ZONE = "America/Chicago"
@@ -307,7 +322,7 @@ if ENABLE_SILK:
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "INFO", "handlers": ["console", "file"]},
+    "root": {"level": "INFO", "handlers": ["console"]},
     "formatters": {
         "verbose": {
             "format": (
@@ -341,11 +356,11 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins", "file"],
+            "handlers": ["console", "mail_admins"],
             "level": "INFO",
             "propagate": True,
         },
-        "django.server": {"handlers": ["console", "file"], "level": "INFO", "propagate": True},
+        "django.server": {"handlers": ["console"], "level": "INFO", "propagate": True},
         "saleor": {"handlers": ["console", "file"], "level": "DEBUG", "propagate": True},
     },
 }
@@ -693,3 +708,7 @@ PLUGINS = [
 # True to use DraftJS (JSON based), for the 2.0 dashboard
 # False to use the old editor from dashboard 1.0
 USE_JSON_CONTENT = get_bool_from_env("USE_JSON_CONTENT", False)
+
+ELASTICSEARCH_ENABLED = True
+ELASTICSEARCH_HOSTS = ["http://35.232.197.57:9200"]
+ELASTICSEARCH_INDEX = "django-logging-json"
