@@ -184,7 +184,7 @@ def checkout_success(request, token):
             "user": str(order.user.first_name) + " " + str(order.user.last_name)
         }
         # logger.info(json.dumps(log_dict))
-        logger.info(log_dict)
+        logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=log_dict)
 
         return TemplateResponse(request, "order/checkout_success.html", ctx)
     form_data = request.POST.copy()
