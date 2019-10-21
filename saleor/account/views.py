@@ -24,7 +24,9 @@ from .forms import (
     logout_on_password_change,
 )
 from .models import User
+import logging
 
+logger = logging.getLogger(__name__)
 
 @find_and_assign_anonymous_checkout()
 def login(request):
@@ -34,6 +36,8 @@ def login(request):
 
 @login_required
 def logout(request):
+    # mioitlog
+    logger.info("User %s has been logged out", request.user)
     auth.logout(request)
     messages.success(request, _("You have been successfully logged out."))
     return redirect(settings.LOGIN_REDIRECT_URL)
@@ -49,6 +53,8 @@ def signup(request):
         if user:
             auth.login(request, user)
         messages.success(request, _("User has been created"))
+        # mioitlog
+        logger.info("User %s has been created", email)
         redirect_url = request.POST.get("next", settings.LOGIN_REDIRECT_URL)
         return redirect(redirect_url)
     ctx = {"form": form}
