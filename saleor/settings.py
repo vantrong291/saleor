@@ -215,7 +215,6 @@ TEMPLATES = [
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 MIDDLEWARE = [
-    'django_logging.middleware.DjangoLoggingMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -285,7 +284,6 @@ INSTALLED_APPS = [
     "impersonate",
     "phonenumber_field",
     "captcha",
-    "django_logging"
 ]
 
 ENABLE_DEBUG_TOOLBAR = get_bool_from_env("ENABLE_DEBUG_TOOLBAR", False)
