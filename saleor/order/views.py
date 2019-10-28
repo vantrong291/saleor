@@ -180,7 +180,7 @@ def checkout_success(request, token):
         #     order.user.first_name) + " " + str(order.user.last_name)))
         log_dict = {
             "event": "CHECKOUT ORDER SUCCESSFULLY",
-            "product": order.product_to_string(),
+            "product": order.product_to_list(),
             "user_id": order.user.id,
             "user_email": order.user_email,
             "user_address": order.user.addresses.first().parse_data(),

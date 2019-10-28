@@ -338,6 +338,12 @@ class Order(models.Model):
             str_product_result = str_product_result + " " + str(line.product_name) + " " + str(line.variant_name) + ", "
         return  str_product_result
 
+    def product_to_list(self):
+        list_product_result = []
+        for line in self.lines.all():
+            list_product_result.append(line.product_name)
+        return list_product_result
+
     def variant_to_string(self):
         str_variant_result = ""
         for line in self.lines.all():
