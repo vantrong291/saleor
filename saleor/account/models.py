@@ -98,6 +98,13 @@ class Address(models.Model):
         """Return a new instance of the same address."""
         return Address.objects.create(**self.as_data())
 
+    def parse_data(self):
+        return  {
+            "street_address_1": self.street_address_1,
+            "city": self.city,
+            "city_area": self.city_area,
+            "country_area": self.country_area
+        }
 
 class UserManager(BaseUserManager):
     def create_user(

@@ -176,12 +176,22 @@ def checkout_success(request, token):
     if request.user.is_authenticated:
         # //vantrong291 log
         # mioitlog
-        logger.info('CHECKOUT ORDER SUCCESSFULLY | PRODUCT | {} | USER | {}'.format(order.product_to_string(), str(
-            order.user.first_name) + " " + str(order.user.last_name)))
+        # logger.info('CHECKOUT ORDER SUCCESSFULLY | PRODUCT | {} | USER | {}'.format(order.product_to_string(), str(
+        #     order.user.first_name) + " " + str(order.user.last_name)))
         log_dict = {
             "event": "CHECKOUT ORDER SUCCESSFULLY",
             "product": order.product_to_string(),
-            "user": str(order.user.first_name) + " " + str(order.user.last_name)
+            "user": str(order.user.first_name) + " " + str(order.user.last_name),
+            "billing_address": order.billing_address.parse_data(),
+            "shipping_address": order.shipping_address.parse_data(),
+            "shipping_method": order.shipping_method_name,
+            "total_gross_amount": order.total_gross_amount,
+            "total_net_amount": order.total_net_amount,
+            "discount_amount": order.discount_amount,
+            "shipping_price_gross_amount": order.shipping_price_gross_amount,
+            "shipping_price_net_amount": order.shipping_price_net_amount,
+            "currency": order.currency,
+            "display_gross_prices": order.display_gross_prices
         }
         # logger.info(json.dumps(log_dict))
         logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=log_dict)

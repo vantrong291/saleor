@@ -99,7 +99,7 @@ def product_details(request, slug, product_id, form=None):
 
     # //vantrong291 log
     # mioitlog
-    logger.info('PRODUCT DETAILS | ID | {} | PRODUCT | {} | TYPE | {} | CATEGORY | {}'.format(product_id, product.name, product.product_type, product.category))
+    # logger.info('PRODUCT DETAILS | ID | {} | PRODUCT | {} | TYPE | {} | CATEGORY | {}'.format(product_id, product.name, product.product_type, product.category))
     log_dict = {
         "event": "PRODUCT DETAILS",
         "product_id": product_id,
