@@ -181,7 +181,9 @@ def checkout_success(request, token):
         log_dict = {
             "event": "CHECKOUT ORDER SUCCESSFULLY",
             "product": order.product_to_string(),
-            "user": str(order.user.first_name) + " " + str(order.user.last_name),
+            "user_id": order.user.id,
+            "user_email": order.user_email,
+            "user_address": order.user.addresses.first().parse_data(),
             "billing_address": order.billing_address.parse_data(),
             "shipping_address": order.shipping_address.parse_data(),
             "shipping_method": order.shipping_method_name,
