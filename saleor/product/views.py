@@ -167,7 +167,7 @@ def product_add_to_checkout(request, slug, product_id):
     if form.is_valid():
         form.save()
         if request.is_ajax():
-            logger.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2')
+            # logger.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2')
             response = JsonResponse({"next": reverse("checkout:index")}, status=200)
         else:
             response = redirect("checkout:index")
