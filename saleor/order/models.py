@@ -350,6 +350,12 @@ class Order(models.Model):
             list_product_category_result.append(line.variant.product.category.name)
         return list_product_category_result
 
+    def product_type_to_list(self):
+        list_product_type_result = []
+        for line in self.lines.all():
+            list_product_type_result.append(line.variant.product.product_type.name)
+        return list_product_type_result
+
     def variant_to_string(self):
         str_variant_result = ""
         for line in self.lines.all():

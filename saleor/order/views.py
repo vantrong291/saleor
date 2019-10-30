@@ -178,8 +178,33 @@ def checkout_success(request, token):
         # mioitlog
         # logger.info('CHECKOUT ORDER SUCCESSFULLY | PRODUCT | {} | USER | {}'.format(order.product_to_string(), str(
         #     order.user.first_name) + " " + str(order.user.last_name)))
-        log_dict = {
-            "event": "CHECKOUT ORDER SUCCESSFULLY",
+        for product in order.product_to_list():
+            product_info_log_dict = {
+                "order_id": order.id,
+                "event": "CHECKOUT ORDER SUCCESSFULLY - PRODUCT INFO",
+                "product": product,
+            }
+            logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=product_info_log_dict)
+
+        for category in order.product_category_to_list():
+            category_info_log_dict = {
+                "order_id": order.id,
+                "event": "CHECKOUT ORDER SUCCESSFULLY - CATEGORY INFO",
+                "category": category,
+            }
+            logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=category_info_log_dict)
+
+        for type in order.product_type_to_list():
+            type_info_log_dict = {
+                "order_id": order.id,
+                "event": "CHECKOUT ORDER SUCCESSFULLY - PRODUCT TYPE INFO",
+                "type": type,
+            }
+            logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=type_info_log_dict)
+
+        extra_info_log_dict = {
+            "order_id": order.id,
+            "event": "CHECKOUT ORDER SUCCESSFULLY - EXTRA INFO",
             "product": order.product_to_list(),
             "product_category": order.product_category_to_list(),
             "user_id": order.user.id,
@@ -197,7 +222,7 @@ def checkout_success(request, token):
             "display_gross_prices": order.display_gross_prices
         }
         # logger.info(json.dumps(log_dict))
-        logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=log_dict)
+        logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=extra_info_log_dict)
 
         return TemplateResponse(request, "order/checkout_success.html", ctx)
     form_data = request.POST.copy()
