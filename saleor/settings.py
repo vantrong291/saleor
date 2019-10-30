@@ -46,7 +46,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 ALLOWED_CLIENT_HOSTS = get_list(
-    os.environ.get("ALLOWED_CLIENT_HOSTS", "localhost,127.0.0.1,112.137.131.12")
+    os.environ.get("ALLOWED_CLIENT_HOSTS", "localhost,127.0.0.1,104.154.16.202")
 )
 
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
@@ -59,7 +59,7 @@ CACHES = {"default": django_cache_url.config()}
 
 # DATABASES = {
 #     "default": dj_database_url.config(
-#         # default="postgres://saleor:saleor@112.137.131.12:5432/saleor", conn_max_age=600
+#         # default="postgres://saleor:saleor@104.154.16.202:5432/saleor", conn_max_age=600
 #         default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600
 #     )
 # }
@@ -70,7 +70,7 @@ DATABASES = {
         'NAME': 'saleor',
         'USER': "saleor",
         'PASSWORD': "saleor",
-        'HOST': "localhost",
+        'HOST': "104.154.16.202",
         'PORT': "5432",
     }
 }
@@ -448,7 +448,7 @@ bootstrap4 = {
 
 TEST_RUNNER = "tests.runner.PytestTestRunner"
 
-ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,112.137.131.12"))
+ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,104.154.16.202"))
 ALLOWED_GRAPHQL_ORIGINS = os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

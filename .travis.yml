@@ -34,7 +34,7 @@ script:
 
 env:
   global:
-    - DATABASE_URL="postgres://postgres@112.137.131.12:5432/saleor"
+    - DATABASE_URL="postgres://postgres@104.154.16.202:5432/saleor"
     - SECRET_KEY="irrelevant"
     - DIFF_RESULTS_BASE_URL="http://dhrwmpu5reeyd.cloudfront.net"
     - QUERIES_RESULTS_PATH=/tmp/queries-results.json
