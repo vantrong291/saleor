@@ -347,7 +347,7 @@ class Order(models.Model):
     def variant_to_list(self):
         list_variant_result = []
         for line in self.lines.all():
-            list_variant_result.append(line.product_name + " " + line.variant_name)
+            list_variant_result.append({"variant": line.product_name + " " + line.variant_name, "quantity": line.variant.quantity, "quantity_allocated": line.variant.quantity_allocated})
         return list_variant_result
 
     def product_category_to_list(self):
