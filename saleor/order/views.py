@@ -181,10 +181,18 @@ def checkout_success(request, token):
         for product in order.product_to_list():
             product_info_log_dict = {
                 "order_id": order.id,
-                "event": "CHECKOUT ORDER SUCCESSFULLY - PRODUCT INFO",
+                "event": "CHECKOUT ORDEaR SUCCESSFULLY - PRODUCT INFO",
                 "product": product,
             }
             logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=product_info_log_dict)
+
+        for variant in order.variant_to_list():
+            variant_info_log_dict = {
+                "order_id": order.id,
+                "event": "CHECKOUT ORDEaR SUCCESSFULLY - VARIANT INFO",
+                "variant": variant,
+            }
+            logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=variant_info_log_dict)
 
         for category in order.product_category_to_list():
             category_info_log_dict = {

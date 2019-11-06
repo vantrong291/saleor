@@ -344,6 +344,12 @@ class Order(models.Model):
             list_product_result.append(line.product_name)
         return list_product_result
 
+    def variant_to_list(self):
+        list_variant_result = []
+        for line in self.lines.all():
+            list_variant_result.append(line.product_name + " " + line.variant_name)
+        return list_variant_result
+
     def product_category_to_list(self):
         list_product_category_result = []
         for line in self.lines.all():
