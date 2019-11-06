@@ -181,7 +181,7 @@ def checkout_success(request, token):
         for product in order.product_to_list():
             product_info_log_dict = {
                 "order_id": order.id,
-                "event": "CHECKOUT ORDEaR SUCCESSFULLY - PRODUCT INFO",
+                "event": "CHECKOUT ORDER SUCCESSFULLY - PRODUCT INFO",
                 "product": product,
             }
             logger.info("CHECKOUT ORDER SUCCESSFULLY", extra=product_info_log_dict)
@@ -189,7 +189,7 @@ def checkout_success(request, token):
         for variant in order.variant_to_list():
             variant_info_log_dict = {
                 "order_id": order.id,
-                "event": "CHECKOUT ORDEaR SUCCESSFULLY - VARIANT INFO",
+                "event": "CHECKOUT ORDER SUCCESSFULLY - VARIANT INFO",
                 "variant": variant['variant'],
                 "quantity_allocated": variant['quantity_allocated'],
                 "quantity": variant['quantity'],
