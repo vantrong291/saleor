@@ -658,8 +658,12 @@ def fulfill_order_lines(request, order_pk):
         messages.success(request, msg)
         logger = logging.getLogger(__name__)
         # mioitlog
-        logger.info("Fulfill item for order %s",order_pk)
-    
+        log_dict = {
+            "event": "ORDER FULFILLMENT",
+            "order": order_pk
+        }
+        logger.info("ORDER FULFILLMENT", extra=log_dict)
+
         return redirect("dashboard:order-details", order_pk=order.pk)
     elif form.errors:
         status = 400

@@ -37,7 +37,11 @@ def login(request):
 @login_required
 def logout(request):
     # mioitlog
-    logger.info("User %s has been logged out", request.user)
+    logout_dict = {
+        "event": "USER LOGOUT",
+        "user": request.user.email
+    }
+    logger.info("USER LOGOUT", extra=logout_dict)
     auth.logout(request)
     messages.success(request, _("You have been successfully logged out."))
     return redirect(settings.LOGIN_REDIRECT_URL)
@@ -54,7 +58,12 @@ def signup(request):
             auth.login(request, user)
         messages.success(request, _("User has been created"))
         # mioitlog
-        logger.info("User %s has been created", email)
+        log_dict = {
+            "event": "USER REGISTRATION",
+            "user": email
+        }
+        logger.info("USER REGISTRATION", extra=log_dict)
+
         redirect_url = request.POST.get("next", settings.LOGIN_REDIRECT_URL)
         return redirect(redirect_url)
     ctx = {"form": form}
