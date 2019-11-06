@@ -708,6 +708,6 @@ PLUGINS = [
 # False to use the old editor from dashboard 1.0
 USE_JSON_CONTENT = get_bool_from_env("USE_JSON_CONTENT", False)
 
-ELASTICSEARCH_ENABLED = True
-ELASTICSEARCH_HOSTS = ["http://35.232.197.57:9200"]
-ELASTICSEARCH_INDEX = "django-logging-json"
+# ELASTICSEARCH_ENABLED = True
+# ELASTICSEARCH_HOSTS = ["http://35.232.197.57:9200"]
+# ELASTICSEARCH_INDEX = "django-logging-json"
